@@ -110,7 +110,7 @@ int login()
            if (check_login(user, pass) == 0)
            {
               cout << "\nAccess Granted, Congratulations\n\n";
-              return loginAuth = 1;
+              return loginAuth = 2;
            }
            else
            {
@@ -126,6 +126,26 @@ int login()
     }             
 }
 
+int splash_page(string username)
+{
+    string cmd;
+    string logout = "logout";
+    
+    cout << "\nWelcome, "
+         << username
+         << "\n\nEnter Command: ";
+    cin >> cmd;
+    if (cmd == "help") cout << "Commands\n"
+                            << "--------\n"
+                            << logout
+                            << " - Logs user out\n";
+    else if (cmd == logout)
+    {
+         cout << "\nLogging out...\n\n";
+         login();
+    }
+}
+
 char hold()
 {
     char hold;
@@ -136,10 +156,14 @@ char hold()
 int main()
 {
     login();
-    if (loginAuth == 1)
+    if (loginAuth == 1)                 // value 1 restarts login()
     {
        loginAuth = 0;
        main();
+    }
+    else if (loginAuth == 2)            // value 2 starts splash_page()
+    {
+         splash_page(user);
     }
     if (hold() == 'r') main();
 }
