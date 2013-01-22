@@ -8,13 +8,15 @@ using namespace std;
 
 string user;            // Username input string
 string pass;            // Password input string
-string holdUser;        // Username check string
-string holdPass;        // Password check string
-int loginAuth = 0;      // Login Authenticator
+string chkUser;         // Username check string
+string chkPass;         // Password check string
+int caller = 1;         // Variable for switch(caller) in main()
 
 
 
-int check_login(string userIn, string passIn)
+//Called independently
+//--------------------
+int check_login()
 {
     ifstream loginLib;
     loginLib.open("logins.txt");
@@ -23,11 +25,11 @@ int check_login(string userIn, string passIn)
     while (loginLib >> holdWord)
     {
           colon = holdWord.find(':');
-          holdUser = holdWord.substr(0, colon);
-          holdPass = holdWord.substr(colon + 1, holdWord.length());
-          if (holdUser == userIn)
+          chkUser = holdWord.substr(0, colon);
+          chkPass = holdWord.substr(colon + 1, holdWord.length());
+          if (user == chkUser)
           {
-             if (holdPass == passIn) return 0;
+             if (pass == chkPass) return 0;
              else return 1;
           }
              
@@ -39,117 +41,147 @@ int check_login(string userIn, string passIn)
     //else return false;
 }
 
-int create_user(string nUserIn, string nPassIn)
+int create_user()
 {
     ofstream loginLib;
     loginLib.open("logins.txt", fstream::app);
-    loginLib << nUserIn
+    loginLib << user
              << ":"
-             << nPassIn
+             << pass
              << endl;
     loginLib.close();
-    cout << "\n"
-         << nUserIn
+    cout << "\n> User "
+         << user
          << " created!\n\n";
+}
+//---------------------------------------------
+
+
+
+
+//Called with switch(caller)
+//--------------------------------------------
+int splash()
+{
+    string cmd;
+    string logout = "logout";
+    cout << "Enter Command: ";
+    cin >> cmd;
+    if (cmd == "help")
+    {
+            cout << "========\n"
+                 << "Commands\n"
+                 << "--------\n"
+                 << logout
+                 << " - Logs user out\n";
+            return caller = 2;//Calls splash()
+    }
+    else if (cmd == logout)
+    {
+         cout << '\n'
+              << "> "
+              << user
+              << " logged out\n\n";
+         return caller = 1;//Calls login()
+    }
+    else
+    {
+        cerr << '\n'
+             << "----------------------\n"
+             << "Error: Unknown Command\n"
+             << "----------------------\n\n";
+        return caller = 2;//Calls splash()
+    }
 }
 
 int new_user()
 {
-    string newUser;
-    string newPass;
-    string newPass2;
-    string nullPass = "";
-    cout << "\n\nType 'cancel' to return to login\n"
+    pass = "";
+    cout << "\n\n> Type 'cancel' to return to login\n"
          << "\nEnter desired username: ";
-    cin >> newUser;
-    if (newUser == "cancel")
+    cin >> user;
+    if (user == "cancel")
     {
-                cout << "\nCanceled\n";
-                return loginAuth = 1;
+                cout << '\n'
+                     << "> Canceled\n\n";
+                return caller = 1;//Calls login()
     }
-    else if (check_login(newUser, nullPass) == 1)
+    else if (check_login() == 1)
     {
-       cerr << "\nError: Username already exists\n";
-       return loginAuth = 1;
+       cerr << '\n'
+            << "------------------------------\n"
+            << "Error: Username already exists\n"
+            << "------------------------------\n\n";
+       return caller = 3;//Calls new_user()
     }
     else
     {
         cout << "\nEnter desired password: ";
-        cin >> newPass;
+        cin >> pass;
         cout << "\nConfirm desired password: ";
-        cin >> newPass2;
-        if (newPass != newPass2)
+        cin >> chkPass;
+        if (pass != chkPass)
         {
-                    cerr << "\nPasswords don't match\n";
-                    return loginAuth = 1;
+                    cerr << '\n'
+                         << "----------------------------\n"
+                         << "Error: Passwords don't match\n"
+                         << "----------------------------\n\n";
+                    return caller = 3;//Calls new_user()
         }
         else
         {
-            create_user(newUser, newPass);
-            return loginAuth = 1;
+            create_user();
+            return caller = 1;//Calls login()
         }
     }
 }
 
 int login()
 {
-    cout << "\nType 'new' to create new user, or enter username.\n"
-         << "\nUsername: ";
+    cout << "> Type 'new' to create new user, or enter username.\n\n"
+         << "Username: ";
     cin >> user;
     if (user == "new")
     {
-             new_user();
+             return caller = 3;//Calls new_user()
     }
-    //else if (user == "test") check_lib(user);
     else
     {
         if (user != "")
         {
            cout << "\nPassword: ";
            cin >> pass;
-           if (check_login(user, pass) == 0)
+           if (check_login() == 0)
            {
-              cout << "\nAccess Granted\n\n"
-                   << "Welcome, "
+              cout << '\n'
+                   << "> "
                    << user
-                   << "\n";
-              return loginAuth = 2;
+                   << " logged in\n\n";
+              return caller = 2;//Calls splash()
            }
            else
            {
-               cerr << "\nError: Incorrect login\n\n";
-               return loginAuth = 1;
+               cerr << '\n'
+                    << "----------------------\n"
+                    << "Error: Incorrect login\n"
+                    << "----------------------\n\n";
+               return caller = 1;//Calls login()
            }
         }
         else
         {
-            cerr << "\nError: Must type username\n\n";
-            return loginAuth = 1;
+            cerr << '\n'
+                 << "-------------------------\n"
+                 << "Error: Must type username\n"
+                 << "-------------------------\n\n";
+            return caller = 1;//Calls login()
         }
     }             
 }
+//-------------------------------------------------
 
-int splash()
-{
-    string cmd;
-    string logout = "logout";
-    cout << "\n\nEnter Command: ";
-    cin >> cmd;
-    if (cmd == "help") cout << "Commands\n"
-                            << "--------\n"
-                            << logout
-                            << " - Logs user out\n";
-    else if (cmd == logout)
-    {
-         cout << "\nLogging out...\n\n";
-         login();
-    }
-    else
-    {
-        cout << "\n\nError: Command Unknown";
-        splash();
-    }
-}
+
+
 
 char hold()
 {
@@ -160,15 +192,23 @@ char hold()
 
 int main()
 {
-    login();
-    if (loginAuth == 1)                 // value 1 restarts login()
+    switch (caller)
     {
-       loginAuth = 0;
-       main();
-    }
-    else if (loginAuth == 2)            // value 2 starts splash()
-    {
-         splash();
+           case 1:               //Calls login()
+                caller = 1;
+                login();
+                main();
+                break;
+           case 2:               //Calls splash()
+                caller = 1;
+                splash();
+                main();
+                break;
+           case 3:               //Calls new_user()
+                caller = 1;
+                new_user();
+                main();
+                break;
     }
     if (hold() == 'r') main();
 }
