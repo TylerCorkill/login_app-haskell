@@ -19,7 +19,7 @@ int caller = 1;         // Variable for switch(caller) in main()
 int check_login()
 {
     ifstream loginLib;
-    loginLib.open("logins.txt");
+    loginLib.open("ulib"); 
     string holdWord;
     int colon;
     while (loginLib >> holdWord)
@@ -44,7 +44,7 @@ int check_login()
 int create_user()
 {
     ofstream loginLib;
-    loginLib.open("logins.txt", fstream::app);
+    loginLib.open("ulib", fstream::app);
     loginLib << user
              << ":"
              << pass
@@ -79,9 +79,9 @@ int splash()
     else if (cmd == logout)
     {
          cout << '\n'
-              << "> "
+              << "> Logged out "
               << user
-              << " logged out\n\n";
+              << "\n\n";
          return caller = 1;//Calls login()
     }
     else
@@ -154,9 +154,9 @@ int login()
            if (check_login() == 0)
            {
               cout << '\n'
-                   << "> "
+                   << "> Logged in "
                    << user
-                   << " logged in\n\n";
+                   << "\n\n";
               return caller = 2;//Calls splash()
            }
            else
