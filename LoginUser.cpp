@@ -3,6 +3,7 @@
 #include <stdexcept>
 #include <fstream>
 #include <string>
+#include <sstream>
 
 using namespace std;
 
@@ -10,26 +11,42 @@ string user;            // Username input string
 string pass;            // Password input string
 string chkUser;         // Username check string
 string chkPass;         // Password check string
+string passHash;        // Password hash holder
 int caller = 1;         // Variable for switch(caller) in main()
 
 
 
 //Called independently
 //--------------------
+unsigned int pass_hash()                  //APHash, algorithim by Arash Partow
+{
+    unsigned int hash = 0xAAAAAAAA;
+    for (int i = 0; i < pass.length(); i++)
+    {
+        hash ^= ((i & 1) == 0) ?
+                ((hash << 7) ^ pass[i] * (hash >> 3)) :
+                (~((hash << 11) + (pass[i] ^ (hash >> 5))));
+    }
+    stringstream hashIn;
+    hashIn << hash;
+    passHash = hashIn.str();
+}
+
 int check_login()
 {
+    pass_hash();
     ifstream loginLib;
     loginLib.open("ulib"); 
-    string holdWord;
+    string holdUser;
     int colon;
-    while (loginLib >> holdWord)
+    while (loginLib >> holdUser)
     {
-          colon = holdWord.find(':');
-          chkUser = holdWord.substr(0, colon);
-          chkPass = holdWord.substr(colon + 1, holdWord.length());
+          colon = holdUser.find(':');
+          chkUser = holdUser.substr(0, colon);
+          chkPass = holdUser.substr(colon + 1, holdUser.length());
           if (user == chkUser)
           {
-             if (pass == chkPass) return 0;
+             if (passHash == chkPass) return 0;
              else return 1;
           }
              
@@ -43,17 +60,18 @@ int check_login()
 
 int create_user()
 {
+    pass_hash();
     ofstream loginLib;
     loginLib.open("ulib", fstream::app);
     loginLib << user
              << ":"
-             << pass
-             << endl;
+             << passHash
+             << "\n";
     loginLib.close();
     cout << "\n> User "
          << user
          << " created!\n\n";
-}
+}    
 //---------------------------------------------
 
 
