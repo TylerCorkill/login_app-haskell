@@ -11,42 +11,43 @@ string user;            // Username input string
 string pass;            // Password input string
 string chkUser;         // Username check string
 string chkPass;         // Password check string
-string passHash;        // Password hash holder
+string holdHash;        // Hash holder
 int caller = 1;         // Variable for switch(caller) in main()
 
 
 
 //Called independently
 //--------------------
-unsigned int pass_hash()                  //APHash, algorithim by Arash Partow
+unsigned int make_hash(string hashIn)                  //APHash, algorithim by Arash Partow
 {
     unsigned int hash = 0xAAAAAAAA;
-    for (int i = 0; i < pass.length(); i++)
+    for (int i = 0; i < hashIn.length(); i++)
     {
         hash ^= ((i & 1) == 0) ?
-                ((hash << 7) ^ pass[i] * (hash >> 3)) :
-                (~((hash << 11) + (pass[i] ^ (hash >> 5))));
+                ((hash << 7) ^ hashIn[i] * (hash >> 3)) :
+                (~((hash << 11) + (hashIn[i] ^ (hash >> 5))));
     }
-    stringstream hashIn;
-    hashIn << hash;
-    passHash = hashIn.str();
+    stringstream hashOut;
+    hashOut << hash;
+    holdHash = hashOut.str();
 }
 
 int check_login()
 {
-    pass_hash();
     ifstream loginLib;
     loginLib.open("ulib"); 
     string holdUser;
     int colon;
+    make_hash(user);
     while (loginLib >> holdUser)
     {
           colon = holdUser.find(':');
           chkUser = holdUser.substr(0, colon);
           chkPass = holdUser.substr(colon + 1, holdUser.length());
-          if (user == chkUser)
+          if (holdHash == chkUser)
           {
-             if (passHash == chkPass) return 0;
+             make_hash(pass);
+             if (holdHash == chkPass) return 0;
              else return 1;
           }
              
@@ -60,12 +61,13 @@ int check_login()
 
 int create_user()
 {
-    pass_hash();
     ofstream loginLib;
     loginLib.open("ulib", fstream::app);
-    loginLib << user
-             << ":"
-             << passHash
+    make_hash(user);
+    loginLib << holdHash
+             << ":";
+    make_hash(pass);
+    loginLib << holdHash
              << "\n";
     loginLib.close();
     cout << "\n> User "
