@@ -14,19 +14,19 @@ string chkPass;         // Password check string
 string holdHash;        // Hash holder
 int caller = 1;         // Variable for switch(caller) in main()
 
-
+int add(int i1, int i2);
 
 //Called independently
 //--------------------
-unsigned int make_hash(string hashIn)                  //APHash, algorithim by Arash Partow
-{
+unsigned int make_hash(string hashIn)
+{                                    //APHash, algorithim by Arash Partow
     unsigned int hash = 0xAAAAAAAA;
     for (int i = 0; i < hashIn.length(); i++)
     {
         hash ^= ((i & 1) == 0) ?
                 ((hash << 7) ^ hashIn[i] * (hash >> 3)) :
                 (~((hash << 11) + (hashIn[i] ^ (hash >> 5))));
-    }
+    }                                //End APHash algorithim
     stringstream hashOut;
     hashOut << hash;
     holdHash = hashOut.str();
@@ -84,25 +84,34 @@ int create_user()
 int splash()
 {
     string cmd;
-    string logout = "logout";
     cout << "Enter Command: ";
     cin >> cmd;
     if (cmd == "help")
     {
             cout << "========\n"
                  << "Commands\n"
-                 << "--------\n"
-                 << logout
-                 << " - Logs user out\n";
+                 << "--------\n";
             return caller = 2;//Calls splash()
     }
-    else if (cmd == logout)
+    else if (cmd == "logout")
     {
          cout << '\n'
               << "> Logged out "
               << user
               << "\n\n";
          return caller = 1;//Calls login()
+    }
+    else if (cmd == "add")
+    {
+         int x1, x2;
+         cin >> x1 >> x2;
+         cout << "\n> "
+              << x1
+              << " + "
+              << x2
+              << " = "
+              << add(x1, x2)
+              << "\n\n";
     }
     else
     {
