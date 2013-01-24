@@ -14,10 +14,13 @@ string chkPass;         // Password check string
 string holdHash;        // Hash holder
 int caller = 1;         // Variable for switch(caller) in main()
 
-int add(int i1, int i2);
+
+
 
 //Called independently
 //--------------------
+int add(int i1, int i2);
+
 unsigned int make_hash(string hashIn)
 {                                    //APHash, algorithim by Arash Partow
     unsigned int hash = 0xAAAAAAAA;
