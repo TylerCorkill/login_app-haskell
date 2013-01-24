@@ -19,8 +19,6 @@ int caller = 1;         // Variable for switch(caller) in main()
 
 //Called independently
 //--------------------
-int add(int i1, int i2);
-
 unsigned int make_hash(string hashIn)
 {                                    //APHash, algorithim by Arash Partow
     unsigned int hash = 0xAAAAAAAA;
@@ -76,7 +74,11 @@ int create_user()
     cout << "\n> User "
          << user
          << " created!\n\n";
-}    
+}
+
+int add(int i1, int i2);
+
+int getReddit();
 //---------------------------------------------
 
 
@@ -115,6 +117,12 @@ int splash()
               << " = "
               << add(x1, x2)
               << "\n\n";
+    }
+    else if (cmd == "reddit")
+    {
+         //string sub;
+         //cin >> sub;
+         getReddit();
     }
     else
     {
