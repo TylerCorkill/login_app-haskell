@@ -116,7 +116,7 @@ int make_admin(string userIn)
                  << " admin...\n\n"
                  << "> Enter "
                  << userIn
-                 << "'s admin pin: ";
+                 << "'s admin pin (cannot be 0000): ";
             cin >> pin;
             make_hash(pin);
             userLib.seekg(exPoint + 1);
@@ -276,6 +276,7 @@ int new_user()
 
 int login()
 {
+    pin = "";
     cout << "> Type 'new' to create new user, or enter username.\n\n"
          << "Username: ";
     cin >> user;
