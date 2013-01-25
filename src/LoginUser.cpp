@@ -75,21 +75,18 @@ int create_user()
          << user
          << " created!\n\n";
 }
-
-int wipe_ulib()
-{
-    ofstream userLib;
-    userLib.open("lib/ulib");
-    userLib.close();
-}
-
-int add(int i1, int i2);
-
-//int getReddit();
 //---------------------------------------------
 
 
 
+//Command functions
+//-----------------
+int wipe_ulib();
+
+int add(int i1, int i2);
+
+//int getReddit();
+//-----------------
 
 //Called with switch(caller)
 //--------------------------------------------
