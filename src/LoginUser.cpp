@@ -9,10 +9,13 @@ using namespace std;
 
 string user;            // Username input string
 string pass;            // Password input string
+string pin;             // Pin input string
 string chkUser;         // Username check string
 string chkPass;         // Password check string
+string chkType;         // User type check string
 string holdHash;        // Hash holder
 int caller = 1;         // Variable for switch(caller) in main()
+bool admin = false;     // Admin value
 
 
 
@@ -39,16 +42,29 @@ int check_login()
     userLib.open("lib/ulib"); 
     string holdUser;
     int colon;
+    int exPoint;
     make_hash(user);
     while (userLib >> holdUser)
     {
         colon = holdUser.find(':');
+        exPoint = holdUser.find('!');
         chkUser = holdUser.substr(0, colon);
-        chkPass = holdUser.substr(colon + 1, holdUser.length());
+        chkPass = holdUser.substr(colon + 1, exPoint - (colon + 1));
+        chkType = holdUser.substr(exPoint + 1, holdUser.length() - (exPoint + 1));
         if (holdHash == chkUser)
         {
             make_hash(pass);
-            if (holdHash == chkPass) return 0;
+            if (holdHash == chkPass)
+            {
+                make_hash(holdHash.substr(0, 3));
+                if (holdHash == chkType) return 0;
+                else
+                {
+                    make_hash(pin);
+                    if (holdHash == chkType) return 0;
+                    else return 2;
+                }
+            }
             else return 1;
         }
              
@@ -69,11 +85,48 @@ int create_user()
             << ":";
     make_hash(pass);
     userLib << holdHash
+            << "!";
+    make_hash(holdHash.substr(0, 3));
+    userLib << holdHash
             << "\n";
     userLib.close();
     cout << "\n> User "
          << user
          << " created!\n\n";
+}
+
+int make_admin(string userIn)
+{
+    fstream userLib;
+    userLib.open("lib/ulib");
+    string holdUser;
+    int colon;
+    int exPoint;
+    make_hash(userIn);
+    while (userLib >> holdUser)
+    {
+        colon = holdUser.find(':');
+        exPoint = holdUser.find('!');
+        chkUser = holdUser.substr(0, colon);
+        chkType = holdUser.substr(exPoint + 1, holdUser.length() - (exPoint + 1));
+        if (holdHash == chkUser)
+        {
+            cout << "> Making account "
+                 << userIn
+                 << " admin...\n\n"
+                 << "> Enter "
+                 << userIn
+                 << "'s admin pin: ";
+            cin >> pin;
+            make_hash(pin);
+            userLib.seekg(exPoint + 1);
+            userLib << holdHash;
+            cout << "\n\n> "
+                 << userIn
+                 << " is now an admin\n\n";
+        }
+    }
+    pin = "";
 }
 //---------------------------------------------
 
@@ -92,6 +145,8 @@ int add(int i1, int i2);
 //--------------------------------------------
 int splash()
 {
+    pin = "";
+    string cmdUnknown = "\n----------------------\nError: Unknown Command\n----------------------\n\n";
     string cmd;
     cout << "Enter Command: ";
     cin >> cmd;
@@ -108,6 +163,7 @@ int splash()
              << "> Logged out "
              << user
              << "\n\n";
+        admin = false;
         return caller = 1;//Calls login()
     }
     else if (cmd == "add")
@@ -128,23 +184,50 @@ int splash()
     //       cin >> sub;
     //       getReddit();
     //}
+    else if (cmd == "admin")
+    {
+        if (admin)
+        {
+            cin >> user;
+            make_admin(user);
+        }
+        else
+        {
+            cout << cmdUnknown;
+        }
+        return caller = 2;//Calls splash()
+    }
     else if (cmd == "wipe-ulib")
     {
-        cout << "\n> Wipeing user library...\n\n";
-        wipe_ulib();
-        return caller = 1;//Calls login()
+        if (admin)
+        {
+            cout << "\n> Wipeing user library...\n\n";
+            wipe_ulib();
+            admin = false;
+            return caller = 1;//Calls login()
+        }
+        else
+        {
+            cout << cmdUnknown;
+            return caller = 2;//Calls splash()
+        }
     }
     else if (cmd == "break")
     {
-        cout << "\n> Breaking...\n";
-        return caller = 0;//Breaks loop
+        if (admin)
+        {
+            cout << "\n> Breaking...\n";
+            return caller = 0;//Breaks loop
+        }
+        else
+        {
+            cout << cmdUnknown;
+            return caller = 2;//Calls splash()
+        }
     }
     else
     {
-        cerr << '\n'
-             << "----------------------\n"
-             << "Error: Unknown Command\n"
-             << "----------------------\n\n";
+        cerr << cmdUnknown;
         return caller = 2;//Calls splash()
     }
 }
@@ -200,6 +283,7 @@ int login()
     {
         return caller = 3;//Calls new_user()
     }
+    //else if (user == "break") return caller = 0;
     else
     {
         if (user != "")
@@ -213,6 +297,24 @@ int login()
                      << user
                      << "\n\n";
                 return caller = 2;//Calls splash()
+            }
+            else if (check_login() == 2)
+            {
+                cout << "\nAdmin pin: ";
+                cin >> pin;
+                if (check_login() == 0)
+                {
+                    cout << "\n> Logged in admin "
+                         << user
+                         << "\n\n";
+                    admin = true;
+                    return caller = 2;//Calls splash()
+                }
+                else
+                {
+                    cout << "\n> Bad pin\n\n";
+                    return caller = 1;//Calls login()
+                }
             }
             else
             {
