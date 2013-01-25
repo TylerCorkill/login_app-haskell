@@ -76,6 +76,13 @@ int create_user()
          << " created!\n\n";
 }
 
+int wipe_ulib()
+{
+    ofstream userLib;
+    userLib.open("lib/ulib");
+    userLib.close();
+}
+
 int add(int i1, int i2);
 
 //int getReddit();
@@ -124,9 +131,15 @@ int splash()
     //       cin >> sub;
     //       getReddit();
     //}
-    else if(cmd == "break")
+    else if (cmd == "wipe-ulib")
     {
-        cout << "> Breaking...\n";
+        cout << "\n> Wipeing user library...\n\n";
+        wipe_ulib();
+        return caller = 1;//Calls login()
+    }
+    else if (cmd == "break")
+    {
+        cout << "\n> Breaking...\n";
         return caller = 0;//Breaks loop
     }
     else
