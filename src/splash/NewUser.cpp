@@ -19,39 +19,47 @@ int create_user();
 int new_user()
 {
     cout << "\n\n> Type 'cancel' to return to login\n"
-         << "\nEnter desired username: ";
-    cin >> user;
+         << endl
+         << "Enter desired username: ";
+    getline (cin, user);
     if (user == "cancel")
     {
         cout << '\n'
-             << "> Canceling...\n\n";
+             << "> Canceling...\n"
+             << endl;
         return caller = 1;//Calls login()
     }
     else if (check_login() == 1 || 2)
     {
-        cerr << error("userExists");
+        cerr << error("userExists")
+             << endl;
         return caller = 3;//Calls new_user()
     }
     else
     {
-        cout << "\nEnter desired password: ";
-        cin >> pass;
-        cout << "\nConfirm desired password: ";
-        cin >> chkPass;
+        cout << endl
+             << "Enter desired password: ";
+        getline (cin, pass);
+        cout << endl
+             << "Confirm desired password: ";
+        getline (cin, chkPass);
         if (pass != chkPass)
         {
-            cerr << error("passMismatch");
+            cerr << error("passMismatch")
+                 << endl;
             return caller = 3;//Calls new_user()
         }
         else
         {
             cout << "\n> Creating user "
                  << user
-                 << "\n\n";
+                 << "\n"
+                 << endl;
             create_user();
             cout << "\n> User "
                  << user
-                 << " created!\n\n";
+                 << " created!\n"
+                 << endl;
             return caller = 1;//Calls login()
         }
     }

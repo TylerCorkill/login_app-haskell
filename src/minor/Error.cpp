@@ -8,13 +8,13 @@ using namespace std;
 
 string error(string error)
 {
-	string userExists = "\n------------------------------\nError: Username already exists\n------------------------------\n\n";
-	string passMismatch = "\n----------------------------\nError: Passwords don't match\n----------------------------\n\n";
-	string cmdUnknown = "\n----------------------\nError: Unknown Command\n----------------------\n\n";
-	string badLogin = "\n----------------------\nError: Incorrect login\n----------------------\n\n";
-	string emptyUser = "\n-------------------------\nError: Must type username\n-------------------------\n\n";
+	string userExists = "\n------------------------------\nError: Username already exists\n------------------------------\n";
+	string passMismatch = "\n----------------------------\nError: Passwords don't match\n----------------------------\n";
+	string cmdUnknown = "\n----------------------\nError: Unknown Command\n----------------------\n";
+	string badLogin = "\n----------------------\nError: Incorrect login\n----------------------\n";
+	string emptyUser = "\n-------------------------\nError: Must type username\n-------------------------\n";
 
-	string errorErr = "\n-----------------\nError: in error()\n-----------------\n\n";
+	string errorErr = "\n-----------------\nError: in error()\n-----------------\n";
 
 	if (error == "userExists") return userExists;
 	else if (error == "passMismatch") return passMismatch;

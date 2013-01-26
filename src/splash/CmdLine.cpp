@@ -21,21 +21,24 @@ int cmd_line()
 {
     string cmd;
     cout << "Enter Command: ";
-    cin >> cmd;
+    getline (cin, cmd, ' ');
+    //cin >> cmd;
     if (cmd == "help")
     {
         cout << "========\n"
              << "Commands\n"
              << "--------\n";
-        return caller = 2;//Calls splash()
+        return caller = 2;//Calls cmd_line()
     }
     else if (cmd == "logout")
     {
-        cout << "\n> Logging out...";
+        cout << "\n> Logging out...\n"
+             << endl;
         admin = false;
-        cout << "\n> "
+        cout << "> "
              << user
-             << " logged out\n\n";
+             << " logged out\n"
+             << endl;
         return caller = 1;//Calls login()
     }
     else if (cmd == "add")
@@ -48,8 +51,9 @@ int cmd_line()
              << x2
              << " = "
              << add(x1, x2)
-             << "\n\n";
-        return caller = 2;//Calls splash()
+             << "\n"
+             << endl;
+        return caller = 2;//Calls cmd_line()
     }
     //  else if (cmd == "reddit")
     //{
@@ -66,10 +70,12 @@ int cmd_line()
         }
         else if (cmd == "wipe-ulib")
         {
-            cout << "\n> Wipeing user library...\n\n";
+            cout << "\n> Wipeing user library...\n"
+                 << endl;
             wipe_ulib();
             admin = false;
-            cout << "\n> User library wiped\n\n";
+            cout << "\n> User library wiped\n"
+                 << endl;
             return caller = 1;//Calls login()
         }
     //}
@@ -79,17 +85,26 @@ int cmd_line()
             //cout << user;
             cout << "\n> Changing "
                  << user
-                 << "'s user-type...\n\n";
+                 << "'s user-type...\n"
+                 << endl;
             make_admin(user);
             cout << "\n> "
                  << user
-                 << "'s user-type changed to admin\n\n";
-            return caller = 2;//Calls splash()
+                 << "'s user-type changed to admin\n"
+                 << endl;
+            return caller = 2;//Calls cmd_line()
+        }
+        else
+        {
+            cerr << error("cmdUnknown")
+                 << endl;
+            return caller = 2;//Calls cmd_line()
         }
     }
     else
     {
-        cerr << error("cmdUnknown");
-        return caller = 2;//Calls splash()
+        cerr << error("cmdUnknown")
+             << endl;
+        return caller = 2;//Calls cmd_line()
     }
 }

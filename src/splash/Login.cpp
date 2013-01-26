@@ -18,9 +18,10 @@ int check_login();
 
 int login()
 {
-    cout << "> Type 'new' to create new user, or enter username.\n\n"
+    cout << "> Type 'new' to create new user, or enter username.\n"
+         << endl
          << "Username: ";
-    cin >> user;
+    getline (cin, user);
     if (user == "new")
     {
         return caller = 3;//Calls new_user()
@@ -31,32 +32,36 @@ int login()
         if (user != "")
         {
             cout << "\nPassword: ";
-            cin >> pass;
+            getline (cin, pass);
             if (check_login() == 0)//Normal user login
             {
                 cout << '\n'
                      << "> Logged in "
                      << user
-                     << "\n\n";
-                return caller = 2;//Calls splash()
+                     << "\n"
+                     << endl;
+                return caller = 2;//Calls cmd_line()
             }
             else if (check_login() == 2)
             {
                 cout << "\n> Logged in admin "
                      << user
-                     << "\n\n";
+                     << "\n"
+                     << endl;
                 admin = true;
-                return caller = 2;//Calls splash()
+                return caller = 2;//Calls cmd_line()
             }
             else
             {
-                cerr << error("badLogin");
+                cerr << error("badLogin")
+                     << endl;
                 return caller = 1;//Calls login()
             }
         }
         else
         {
-            cerr << error("emptyUser");
+            cerr << error("emptyUser")
+                 << endl;
             return caller = 1;//Calls login()
         }
     }             

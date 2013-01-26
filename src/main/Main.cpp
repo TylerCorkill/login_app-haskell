@@ -28,7 +28,7 @@ int main()
             login();
             main();
             break;
-        case 2:               //Calls splash()
+        case 2:               //Calls cmd_line()
             caller = 1;
             cmd_line();
             main();
@@ -38,7 +38,7 @@ int main()
             new_user();
             main();
             break;
-        default:
+        default:              //Breaks
             return 0;
             break;
     }
