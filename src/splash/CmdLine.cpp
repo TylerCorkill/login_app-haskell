@@ -21,7 +21,7 @@ int cmd_line()
 {
     string cmd;
     cout << "Enter Command: ";
-    getline (cin, cmd, ' ');
+    getline (cin, cmd);
     //cin >> cmd;
     if (cmd == "help")
     {
@@ -41,18 +41,19 @@ int cmd_line()
              << endl;
         return caller = 1;//Calls login()
     }
-    else if (cmd == "add")
+    else if (cmd.substr(0,3) == "add")
     {
-        int x1, x2;
-        cin >> x1 >> x2;
-        cout << "\n> "
-             << x1
-             << " + "
-             << x2
-             << " = "
-             << add(x1, x2)
-             << "\n"
-             << endl;
+        cout << true;
+        //int x1, x2;
+        //cin >> x1 >> x2;
+        //cout << "\n> "
+        //     << x1
+        //     << " + "
+        //     << x2
+        //     << " = "
+        //     << add(x1, x2)
+        //     << "\n"
+        //     << endl;
         return caller = 2;//Calls cmd_line()
     }
     //  else if (cmd == "reddit")
