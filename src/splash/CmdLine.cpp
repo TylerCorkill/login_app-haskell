@@ -3,7 +3,6 @@
 #include <fstream>
 #include <string>
 #include <sstream>
-#include "Foo_stub.h"
 
 using namespace std;
 
@@ -18,7 +17,7 @@ int add(int i1, int i2);
 int wipe_ulib();
 int make_admin(string userIn);
 
-int cmd_line(int argc, char *argv[])
+int cmd_line()
 {
     string cmd;
     cout << "Enter Command: ";
@@ -96,18 +95,11 @@ int cmd_line(int argc, char *argv[])
                  << endl;
             return caller = 2;//Calls cmd_line()
         }
-        else if (cmd == "testHS")
+        else if (cmd == "HS")
         {
-            string test;
-            cout << "\nEnter word: ";
-            getline (cin, test);
-            hs_init(&argc, &argv);
-            cout << "\n> Square of length is "
-                 << test_hs(test.length())
-                 << "\n"
+            cout << "\n> Entering haskell test...\n"
                  << endl;
-            hs_exit();
-            return caller = 2;//Calls cmd_line()
+            return caller = 4;//Calls haskell()
         }
         else
         {
