@@ -3,6 +3,7 @@
 #include <fstream>
 #include <string>
 #include <sstream>
+#include "Foo_stub.h"
 
 using namespace std;
 
@@ -17,7 +18,7 @@ int add(int i1, int i2);
 int wipe_ulib();
 int make_admin(string userIn);
 
-int cmd_line()
+int cmd_line(int argc, char *argv[])
 {
     string cmd;
     cout << "Enter Command: ";
@@ -93,6 +94,19 @@ int cmd_line()
                  << user
                  << "'s user-type changed to admin\n"
                  << endl;
+            return caller = 2;//Calls cmd_line()
+        }
+        else if (cmd == "testHS")
+        {
+            string test;
+            cout << "\nEnter word: ";
+            getline (cin, test);
+            hs_init(&argc, &argv);
+            cout << "\n> Square of length is "
+                 << test_hs(test.length())
+                 << "\n"
+                 << endl;
+            hs_exit();
             return caller = 2;//Calls cmd_line()
         }
         else

@@ -6,6 +6,8 @@
 
 using namespace std;
 
+
+
 extern string user;		// Username input string
 extern string pass;		// Password input string
 
