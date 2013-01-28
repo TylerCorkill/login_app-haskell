@@ -17,14 +17,14 @@ int add(int i1, int i2);
 int wipe_ulib();
 int make_admin(string userIn);
 
-string cmd;
+//string cmd;
 
 int cmd_line()
 {
-    //string cmd;
+    string cmd;
     cout << "Enter Command: ";
-    getline (cin, cmd);
-    //cin >> cmd;
+    //getline (cin, cmd);
+    cin >> cmd;
     if (cmd == "help")
     {
         cout << "========\n"
@@ -43,8 +43,8 @@ int cmd_line()
              << endl;
         return caller = 1;//Calls login()
     }
-    //else if (cmd == "add")
-    else if (cmd.substr(0,3) == "add")
+    else if (cmd == "add")
+    //else if (cmd.substr(0,3) == "add")
     {
         //cout << true;
         int x1, x2;
