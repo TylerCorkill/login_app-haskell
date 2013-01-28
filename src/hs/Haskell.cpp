@@ -14,23 +14,28 @@ extern bool admin;      // Admin value
 
 string error(string error);
 
+extern string cmd;
+
 int haskell(int argc, char *argv[])
 {
-    string cmd;
-    cout << "Enter Haskell Command: ";
-    getline (cin, cmd);
-    if (cmd == "test")
+    //string cmd;
+    //getline (cin, cmd);
+    //cin >> cmd;
+    //if (cmd == "test")
+    if (cmd.substr(3, 4) == "test")
     {
-    	string test;
-        cout << "\nEnter word: ";
-        getline (cin, test);
+    	//string test;
+        //cout << "\nEnter word: ";
+        //getline (cin, test);
+        //cin >> test;
         hs_init(&argc, &argv);
         cout << "\n> Square of length is "
-             << test_hs(test.length())
+             //<< test_hs(test.length())
+             << test_hs(cmd.substr(8,cmd.length()).length())
              << "\n"
              << endl;
         hs_exit();
-        return caller = 4;//Calls haskell()
+        return caller = 2;//Calls haskell()
     }
     else if (cmd == "return")
     {

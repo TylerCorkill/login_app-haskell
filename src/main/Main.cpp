@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
             new_user();
             main(argc, argv);
             break;
-        case 4:
+        case 4:               //Calls haskell()
             caller = 1;
             haskell(argc, argv);
             main(argc, argv);

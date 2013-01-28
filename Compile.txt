@@ -1,2 +1,2 @@
 ghc -c -O src/hs/Foo.hs
-ghc --make -no-hs-main -lstdc++ src/hs/Foo.hs src/hs/Haskell.cpp src/main/Main.cpp src/minor/Cmds.cpp src/minor/Error.cpp src/splash/CmdLine.cpp src/splash/Login.cpp src/splash/NewUser.cpp -o test
+ghc --make -no-hs-main -lstdc++ src/hs/Foo.hs src/hs/Haskell.cpp src/main/Main.cpp src/minor/Cmds.cpp src/minor/Error.cpp src/splash/CmdLine.cpp src/splash/Login.cpp src/splash/NewUser.cpp -o test.exe
