@@ -35,18 +35,25 @@ int haskell(int argc, char *argv[])
              << "\n"
              << endl;
         hs_exit();
-        return caller = 2;//Calls haskell()
+        return caller = 2;//Calls cmd_line()
     }
-    else if (cmd == "return")
+    else if (cmd == "dub")
     {
-    	cout << "\n> Returning to command line...\n"
-    		 << endl;
-    	return caller = 2;//Calls cmd_line()
+        int num;
+        cin >> num;
+        hs_init(&argc, &argv);
+        cout << "\n> "
+             << num
+             << " doubled is: "
+             << dub_hs(num)
+             << "\n\n";
+        hs_exit();
+        return caller = 2;//Calls cmd_line()
     }
     else
     {
     	cout << error("cmdUnknown")
     		 << endl;
-    	return caller = 4;//Calls haskell()
+    	return caller = 2;//Calls cmd_line()
     }
 }
