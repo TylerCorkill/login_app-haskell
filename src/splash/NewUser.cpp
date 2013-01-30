@@ -31,8 +31,7 @@ int new_user()
     }
     else if (check_login() == 1 || 2)
     {
-        cerr << error("userExists")
-             << endl;
+        error("userExists");
         return caller = 3;//Calls new_user()
     }
     else
@@ -45,8 +44,7 @@ int new_user()
         getline (cin, chkPass);
         if (pass != chkPass)
         {
-            cerr << error("passMismatch")
-                 << endl;
+            error("passMismatch");
             return caller = 3;//Calls new_user()
         }
         else

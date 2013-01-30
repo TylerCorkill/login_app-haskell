@@ -38,7 +38,6 @@ int login()
                 cout << '\n'
                      << "> Logged in "
                      << user
-                     << "\n"
                      << endl;
                 return caller = 2;//Calls cmd_line()
             }
@@ -46,22 +45,19 @@ int login()
             {
                 cout << "\n> Logged in admin "
                      << user
-                     << "\n"
                      << endl;
                 admin = true;
                 return caller = 2;//Calls cmd_line()
             }
             else
             {
-                cerr << error("badLogin")
-                     << endl;
+                error("badLogin");
                 return caller = 1;//Calls login()
             }
         }
         else
         {
-            cerr << error("emptyUser")
-                 << endl;
+            error("emptyUser");
             return caller = 1;//Calls login()
         }
     }             

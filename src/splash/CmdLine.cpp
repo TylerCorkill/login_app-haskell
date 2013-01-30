@@ -3,6 +3,7 @@
 #include <fstream>
 #include <string>
 #include <sstream>
+#include <stdlib.h>
 
 using namespace std;
 
@@ -13,16 +14,19 @@ extern bool admin;      // Admin value
 
 string error(string error);
 
+int start(string prgm);
+int stop(string sPrgm);
 int add(int i1, int i2);
 int wipe_ulib();
 int make_admin(string userIn);
+int minecraft(string mUser, string mPass);
 
 //string cmd;
 
 int cmd_line()
 {
     string cmd;
-    cout << "Enter Command: ";
+    cout << "\nEnter Command: ";
     //getline (cin, cmd);
     cin >> cmd;
     if (cmd == "help")
@@ -43,6 +47,20 @@ int cmd_line()
              << endl;
         return caller = 1;//Calls login()
     }
+    else if (cmd == "start")                // Starts program
+    {
+        string program;
+        cin >> program;
+        start(program);
+        return caller = 2;//Calls cmd_line()
+    }
+    else if (cmd == "stop")                 // Stops program
+    {
+        string program;
+        cin >> program;
+        stop(program);
+        return caller = 2;//Calls cmd_line()
+    }
     else if (cmd == "add")
     //else if (cmd.substr(0,3) == "add")
     {
@@ -55,7 +73,6 @@ int cmd_line()
              << x2
              << " = "
              << add(x1, x2)
-             << "\n"
              << endl;
         return caller = 2;//Calls cmd_line()
     }
@@ -67,14 +84,21 @@ int cmd_line()
     //}
     else if (admin)
     {
-        if (cmd == "break")
+        if (cmd == "sys")
+        {
+            string command;
+            cin >> command;
+            system(command.c_str());
+            return caller = 2;//Calls cmd_line()
+        }
+        else if (cmd == "break")
         {
             cout << "\n> Breaking...\n";
             return caller = 0;//Breaks loop
         }
         else if (cmd == "wipe-ulib")
         {
-            cout << "\n> Wipeing user library...\n"
+            cout << "\n> Wipeing user library..."
                  << endl;
             wipe_ulib();
             admin = false;
@@ -89,12 +113,12 @@ int cmd_line()
             //cout << user;
             cout << "\n> Changing "
                  << user
-                 << "'s user-type...\n"
+                 << "'s user-type..."
                  << endl;
             make_admin(user);
             cout << "\n> "
                  << user
-                 << "'s user-type changed to admin\n"
+                 << "'s user-type changed to admin"
                  << endl;
             return caller = 2;//Calls cmd_line()
         }
@@ -107,15 +131,13 @@ int cmd_line()
         }
         else
         {
-            cerr << error("cmdUnknown")
-                 << endl;
+            error("cmdUnknown");
             return caller = 2;//Calls cmd_line()
         }
     }
     else
     {
-        cerr << error("cmdUnknown")
-             << endl;
+        error("cmdUnknown");
         return caller = 2;//Calls cmd_line()
     }
 }
