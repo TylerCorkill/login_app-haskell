@@ -122,8 +122,8 @@ int cmd_line()
                  << endl;
             return caller = 2;//Calls cmd_line()
         }
-        //else if (cmd == "HS")
-        else if (cmd.substr(0,2) == "HS")
+        else if (cmd == "HS")
+        //else if (cmd.substr(0,2) == "HS")
         {
             //cout << "\n> Entering haskell test...\n"
             //     << endl;
